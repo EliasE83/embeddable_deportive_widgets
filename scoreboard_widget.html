@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>NCDC Schedules - Season Schedule</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <script>
+    window.customConfiguration = {
+      "username": "elias",
+      "secret":   "tzdbufWtFZ2AISVcyYxWuadIHorXgDUa",
+      "api_url":  "api.usphl.timetoscore.com",
+      "league_id": "2",
+      //"season": "129",
+    };
+  </script>
+  <style>
+    :root {
+      --app-primary-red: #dd1e36;
+      --app-primary-blue: #0c233f;
+      --app-text-color: #000000;
+      --app-secondary-white: #ffffff;
+      --app-tertiary-grey: #9ea1a6;
+      --app-font-family: 'Roboto', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--app-font-family);
+      background-color: #f5f5f5;
+      color: var(--app-text-color);
+    }
+
+    /* FIX para Android: Prevenir zoom y escala automática */
+    #flutter-container {
+      transform: translateZ(0);
+      -webkit-transform: translateZ(0);
+      will-change: transform;
+      /* Forzar tamaño exacto sin escala del navegador */
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+    
+    /* FIX específico para Android con DPR alto */
+    @media screen and (-webkit-min-device-pixel-ratio: 2) {
+      #flutter-container flt-glass-pane,
+      #flutter-container flt-scene-host {
+        transform: scale(1) !important;
+        -webkit-transform: scale(1) !important;
+      }
+    }
+
+    /* Top Navigation Bar */
+    .top-nav {
+      background-color: #000;
+      padding: 8px 0;
+      border-bottom: 1px solid #333;
+    }
+
+    .top-nav-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .league-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .league-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+
+    .league-links a:hover {
+      color: var(--app-primary-red);
+    }
+
+    .top-right-links {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
+
+    .top-right-links a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 12px;
+      text-transform: uppercase;
+      transition: color 0.2s;
+    }
+
+    .top-right-links a:hover {
+      color: var(--app-primary-red);
+    }
+
+    /* Main Header */
+    .main-header {
+      background-color: var(--app-primary-blue);
+      padding: 15px 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo img {
+      height: 60px;
+      width: auto;
+    }
+
+    .main-nav {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+
+    .main-nav a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .main-nav a:hover {
+      color: var(--app-primary-red);
+    }
+
+    .streaming-btn {
+      background-color: var(--app-primary-red);
+      color: #fff !important;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .streaming-btn:hover {
+      background-color: #c11829;
+      color: #fff !important;
+    }
+
+    /* Page Title Section */
+    .page-title-section {
+      background: linear-gradient(135deg, var(--app-primary-blue) 0%, #1a3a5c 100%);
+      padding: 40px 0;
+      text-align: center;
+    }
+
+    .page-title-section h1 {
+      color: #fff;
+      font-size: 42px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin: 0;
+    }
+
+    /* Breadcrumb */
+    .breadcrumb {
+      background-color: var(--app-primary-red);
+      padding: 12px 0;
+    }
+
+    .breadcrumb-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .breadcrumb a {
+      color: #fff;
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .breadcrumb a:hover {
+      opacity: 0.8;
+    }
+
+    .breadcrumb-separator {
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Main Content */
+    .main-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      background-color: #fff;
+      min-height: 600px;
+    }
+
+    .content-header {
+      margin-bottom: 30px;
+    }
+
+    .content-header h2 {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--app-primary-blue);
+      margin-bottom: 10px;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: var(--app-primary-blue);
+      color: #fff;
+      padding: 40px 0 20px;
+      margin-top: 60px;
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 30px;
+    }
+
+    .footer-section h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .footer-section ul {
+      list-style: none;
+    }
+
+    .footer-section ul li {
+      margin-bottom: 8px;
+    }
+
+    .footer-section a {
+      color: rgba(255, 255, 255, 0.8);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .footer-section a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .top-nav-content {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .header-content {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .main-nav {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .page-title-section h1 {
+        font-size: 28px;
+      }
+
+      .breadcrumb-content {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top Navigation -->
+  <nav class="top-nav">
+    <div class="top-nav-content">
+      <div class="league-links">
+        <a href="#">🔴 NCDC</a>
+        <a href="#">🔶 PREMIER</a>
+        <a href="#">🔴 ELITE</a>
+        <a href="#">🎯 THF</a>
+      </div>
+      <div class="top-right-links">
+        <a href="#">ABOUT</a>
+        <a href="#">CONTACT</a>
+        <a href="#">📷</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Header -->
+  <header class="main-header">
+    <div class="header-content">
+      <div class="logo">
+        <img src="https://via.placeholder.com/120x60/0c233f/ffffff?text=NCDC" alt="NCDC Logo">
+      </div>
+      <nav class="main-nav">
+        <a href="#">TEAMS</a>
+        <a href="#">GAME CENTER</a>
+        <a href="#">ADVANCEMENT</a>
+        <a href="#">PLAYERS</a>
+        <a href="#">PLAYER SAFETY</a>
+        <a href="#">EVENTS</a>
+        <a href="#">NEWS</a>
+        <a href="#" class="streaming-btn">
+          📺 USPHL+ STREAMING
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Title -->
+  <section class="page-title-section">
+    <h1>NCDC SCHEDULES</h1>
+  </section>
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <div class="breadcrumb-content">
+      <a href="#">USPHL</a>
+      <span class="breadcrumb-separator">•</span>
+      <a href="#">NCDC</a>
+      <span class="breadcrumb-separator">•</span>
+      <a href="#">NCDC Game Center</a>
+      <span class="breadcrumb-separator">•</span>
+      <span>NCDC Schedules</span>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <div class="content-header">
+      <h2>Scoreboard</h2>
+    </div>
+    <div id="flutter-container"></div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-grid">
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="#">Teams</a></li>
+            <li><a href="#">Schedule</a></li>
+            <li><a href="#">Standings</a></li>
+            <li><a href="#">Stats</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Resources</h3>
+          <ul>
+            <li><a href="#">Player Safety</a></li>
+            <li><a href="#">Advancement</a></li>
+            <li><a href="#">News</a></li>
+            <li><a href="#">Events</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>About</h3>
+          <ul>
+            <li><a href="#">About NCDC</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Connect</h3>
+          <ul>
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Instagram</a></li>
+            <li><a href="#">YouTube</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 NCDC. All rights reserved. Powered by TimeToScore.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    window.widgetConfig = {
+      gameCenter: '/html/game_center_widget.html',
+      leadersPage: '/html/leaders_page_widget.html',
+      playerProfile: '/html/player_profile_widget.html',
+      skaterGoalies: '/html/skater_goalies_widget.html',
+      seasonSchedule: '/html/season_schedule_widget.html',
+      seasonStanding: '/html/season_standing_widget.html',
+      teamPage: '/html/team_page_widget.html',
+    }
+  </script>
+
+
+
+  <script src="app.js?v=20251007-3"></script>
+  <script>
+    window.flutterWidgetPath = "scoreboard_widget/build/web/";//"/flutter/season_schedule_widget/";
+    loadFlutter();
+  </script>
+
+</body>
+
+</html>
