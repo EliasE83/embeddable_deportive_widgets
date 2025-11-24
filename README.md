@@ -160,18 +160,6 @@ flutter build web
 </html>
 ```
 
-#### Option 2: iFrame Embed
-
-```html
-<iframe 
-  src="https://your-domain.com/scoreboard_widget.html"
-  width="100%"
-  height="800"
-  frameborder="0"
-  scrolling="no">
-</iframe>
-```
-
 ## 🏗️ Architecture
 
 ### Project Structure
